@@ -1,4 +1,4 @@
-module.exports = 
+module.exports =
 
   dirs:
     src: 'src'
@@ -9,6 +9,7 @@ module.exports =
   files:
     index: 'index.html'
     js: '**/*.js'
+    js_modules_declaration: '**/_*.js'
     tpl: '**/*.tpl.html'
     scss: '**/*.scss'
     css: '**/*.css'
@@ -16,11 +17,11 @@ module.exports =
 
   vendors:
     js: [
+      'lodash/lodash.min.js'
       'angular/angular.min.js'
-      'angular/angular.min.js.map',
+      'angular/angular.min.js.map'
       'ui-router/release/angular-ui-router.min.js'
     ]
     css: [
-      'foundation/css/normalize.css',
-      'foundation/css/foundation.css'
+      
     ]

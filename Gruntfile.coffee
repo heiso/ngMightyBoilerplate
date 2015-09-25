@@ -11,7 +11,6 @@ module.exports = ( grunt ) ->
   grunt.loadNpmTasks 'grunt-html2js'
   grunt.loadNpmTasks 'grunt-contrib-connect'
   grunt.loadNpmTasks 'grunt-contrib-watch'
-  grunt.loadNpmTasks 'grunt-ssh'
 
   pkg = grunt.file.readJSON 'package.json'
   cfg = require './grunt/gruntConfig.coffee'
@@ -93,17 +92,17 @@ module.exports = ( grunt ) ->
         dest: '<%= cfg.dirs.build %>/<%= cfg.files.index %>'
         src: [
           '<%= cfg.vendors.js %>'
+          '<%= cfg.dirs.build %>/<%= cfg.files.js_modules_declaration %>'
           '<%= cfg.dirs.build %>/<%= cfg.files.js %>'
           '!<%= cfg.dirs.build %>/vendors/<%= cfg.files.js %>'
-          '<%= cfg.vendors.css %>'
-          '<%= cfg.dirs.build %>/<%= cfg.files.css %>'
+          '<%= cfg.dirs.build %>/vendors/<%= cfg.files.css %>'
         ]
 
     connect:
       build:
         options:
           base: '<%= cfg.dirs.build %>'
-          port: 8001
+          port: 8011
           hostname: '127.0.0.1'
           open: true
 
@@ -113,23 +112,30 @@ module.exports = ( grunt ) ->
       jssrc:
         files: '<%= cfg.dirs.src %>/<%= cfg.files.js %>'
         tasks: ['jshint', 'copy']
-      coffeesrc:
-        files: '<%= cfg.dirs.src %>/<%= cfg.files.coffee %>'
-        tasks: ['coffeelint', 'coffee', 'copy']
+        options:
+          livereload: true
       assets:
         files: '<%= cfg.dirs.src %>/<%= cfg.files.assets %>'
         tasks: ['copy']
       index:
         files: '<%= cfg.dirs.src %>/<%= cfg.files.index %>'
         tasks: ['index:build']
+        options:
+          livereload: true
       tpl:
         files: '<%= cfg.dirs.src %>/<%= cfg.files.tpl %>'
         tasks: ['html2js', 'index:build']
+        options:
+          livereload: true
       sass:
         files: '<%= cfg.dirs.src %>/<%= cfg.files.scss %>'
         tasks: ['sass:build']
         options:
           livereload: true
+      livereload:
+        files: [
+          'src/**/*.js'
+        ]
       # configs:
       #   files: '<%= cfg.files.config %>'
       #   tasks: [ 'buildconfig', 'jshint:all', 'copy:build_appjs' ]
@@ -155,12 +161,13 @@ module.exports = ( grunt ) ->
     while i >= 0
       files.unshift 'vendors/'+cfg.vendors.js[i]
       i--
-    grunt.file.copy @data.index, @data.dest, 
+    grunt.file.copy @data.index, @data.dest,
       process: ( contents, path ) ->
-        grunt.template.process contents, 
+        grunt.template.process contents,
           data:
             scripts: files.filter (file) ->
               file.match /\.js$/
             styles: files.filter (file) ->
               file.match /\.css$/
+            style: 'index'+pkg.name+pkg.version+'.css'
             version: grunt.config 'pkg.version'

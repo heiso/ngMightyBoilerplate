@@ -18,6 +18,6 @@
   "dependencies": {
     "angular": "~1.3",
     "ui-router": "~0.2.13",
-    "foundation": "~5.4.7"
+    "lodash": "~3.8.0"
   }
 }

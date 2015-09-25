@@ -8,7 +8,7 @@ angular
         views: {
           'main': {
             'templateUrl': 'app/home/homeIndex.tpl.html',
-            'controller': 'homeIndexCtrl'
+            'controller': 'homeIndexCtrl as vm'
           }
         }
       });

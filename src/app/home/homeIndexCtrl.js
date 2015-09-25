@@ -1,5 +1,12 @@
-angular
-  .module('app.home')
-  .controller('homeIndexCtrl', function controller() {
+(function() {
 
-  });
+  angular
+    .module('app.home')
+    .controller('homeIndexCtrl', HomeIndexCtrl);
+
+  function HomeIndexCtrl() {
+    var vm = this;
+
+  }
+
+})();
